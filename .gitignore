@@ -1,0 +1,35 @@
+# Binary files
+bin/
+
+# Dependency directory created by Go when using go vendor
+vendor/
+
+# Exclude dependencies and modules built through build, fmt, etc.
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go cache, logs, and test results
+*.log
+*.test
+*.out
+
+# Go cache directory
+go.sum
+
+# Test and build directory
+_test/
+
+# Editor configuration files
+.idea/
+.vscode/
+*.iml
+
+# Test coverage results
+*.coverprofile
+
+# Go modules, can exclude if you want to commit go.sum
+go.sum
+
