@@ -123,3 +123,103 @@ curl -N -H "Accept: text/event-stream" \
      "http://localhost:8080/subscribe?channel=test-channel"
 
 ```
+
+## Publishing Messages in Teller
+
+Teller allows you to publish messages to specific channels, which are then delivered in real-time to all clients subscribed to those channels. Below are detailed instructions on how to publish messages using both JavaScript and `curl`.
+
+### 1. Publishing a Message Using JavaScript
+
+To publish a message to a specific channel from a JavaScript application, follow these steps:
+
+#### Step 1: Obtain a JWT Token
+
+Before you can publish a message, you need a valid JWT token. This token should be obtained from your backend (depending on your authentication flow).
+
+#### Step 2: Publish the Message
+
+Use the following JavaScript code to publish a message to a channel:
+
+```javascript
+async function publishMessage(channel, message) {
+    const token = 'your_jwt_secret'; // Replace with your actual JWT token
+    const url = 'http://localhost:8080/publish';
+
+    const payload = {
+        channel: channel,
+        message: message
+    };
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+        console.log('Message published successfully');
+    } else {
+        console.error('Failed to publish message', await response.text());
+    }
+}
+
+// Example usage
+publishMessage('test-channel', { key: 'value' });
+```
+
+#### Expected Response
+
+- **Success (`200 OK`)**: The message is published, and the server responds with:
+
+  ```json
+  "Message received successfully"
+  ```
+
+### 2. Publishing a Message Using `curl`
+
+You can also publish a message to a channel using `curl`, which is particularly useful for quick testing or automation scripts.
+
+#### Step 1: Run the Following `curl` Command
+
+```bash
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer your_jwt_token" \
+     -d '{"channel": "test-channel", "message": {"key": "value"}}' \
+     http://localhost:8080/publish
+```
+
+Replace `your_jwt_token` with a valid JWT token and adjust the `channel` and `message` fields as needed.
+
+#### Expected Response
+
+- **Success (`200 OK`)**: The message is published, and the server responds with:
+
+  ```json
+  "Message received successfully"
+  ```
+
+### 3. Server-Side Implementation Details
+
+Here’s how the Teller application handles message publication:
+
+- **Endpoint**: `/publish`
+- **HTTP Method**: `POST`
+- **Request Payload**:
+  - `channel`: The channel name to which the message is being published (required).
+  - `message`: The message content in JSON format (required).
+
+- **JWT Authentication**: The request must include a valid JWT token in the `Authorization` header. The server validates this token before processing the message.
+
+- **Success Response**:
+  - `200 OK`: Message published successfully.
+
+### 4. Example Workflow
+
+1. **Publish a Message**: Use JavaScript or `curl` to publish a message to a specific channel (e.g., `test-channel`).
+2. **Subscribe to the Channel**: Ensure that clients are subscribed to the channel to receive the message in real-time.
+3. **Observe the Interaction**: The published message will be broadcast to all clients subscribed to the `test-channel`.
+
