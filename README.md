@@ -6,6 +6,35 @@
 
 Teller is ideal for scenarios where real-time updates are critical, and it excels in environments where quick setup, ease of testing, and minimal deployment complexity are desired. Its simplicity makes it particularly suited for Single Page Application (SPA) development and local frontend testing, offering a straightforward, yet powerful, real-time communication tool.
 
+## How It Works
+
+Teller is designed to facilitate real-time messaging between a server and multiple clients through a streamlined process. Below is a simplified explanation of how the core components interact.
+
+### 1. The Server
+
+- **Handles Client Connections**: The server listens for incoming client connections on a specified port. Clients can subscribe to specific channels using Server-Sent Events (SSE) to receive real-time updates.
+  
+- **Manages Subscriptions**: When a client subscribes to a channel, the server registers the client and creates a communication channel to send updates. The server ensures that only authenticated clients, verified through JWT tokens, can subscribe to or publish on channels.
+
+- **Distributes Messages**: The server distributes messages to all clients subscribed to a particular channel as soon as those messages are published.
+
+### 2. The Publisher
+
+- **Publishes Messages**: The publisher is any client or service that sends a message to a specific channel via the `/publish` endpoint. The publisher must include a valid JWT token for authentication.
+
+- **Specifies the Channel**: Along with the message content, the publisher specifies the target channel to which the message should be sent. This ensures that only clients subscribed to that channel will receive the message.
+
+### 3. The Server Processes and Distributes
+
+- **Receives the Message**: Once the server receives a message from the publisher, it validates the JWT token to ensure the publisher is authorized to send messages.
+
+- **Broadcasts to Subscribers**: After validation, the server broadcasts the message to all clients currently subscribed to the specified channel. These clients receive the message in real-time via SSE.
+
+- **Monitors Connections**: The server continuously monitors active connections and handles disconnections, ensuring that the messaging system remains robust and efficient.
+
+This simple yet powerful workflow makes Teller an ideal choice for scenarios requiring low-latency updates and secure, efficient communication between a server and multiple clients.
+
+
 ### Key Features
 
 - **Real-Time Communication**: Teller utilizes Server-Sent Events (SSE) to push real-time updates from the server to connected clients. This ensures that users receive timely and accurate information as soon as it becomes available, without the overhead of more complex protocols.
@@ -213,25 +242,3 @@ Replace `your_jwt_token` with a valid JWT token and adjust the `channel` and `me
   ```json
   "Message received successfully"
   ```
-
-### 3. Server-Side Implementation Details
-
-Here’s how the Teller application handles message publication:
-
-- **Endpoint**: `/publish`
-- **HTTP Method**: `POST`
-- **Request Payload**:
-  - `channel`: The channel name to which the message is being published (required).
-  - `message`: The message content in JSON format (required).
-
-- **JWT Authentication**: The request must include a valid JWT token in the `Authorization` header. The server validates this token before processing the message.
-
-- **Success Response**:
-  - `200 OK`: Message published successfully.
-
-### 4. Example Workflow
-
-1. **Publish a Message**: Use JavaScript or `curl` to publish a message to a specific channel (e.g., `test-channel`).
-2. **Subscribe to the Channel**: Ensure that clients are subscribed to the channel to receive the message in real-time.
-3. **Observe the Interaction**: The published message will be broadcast to all clients subscribed to the `test-channel`.
-
