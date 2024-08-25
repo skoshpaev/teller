@@ -1,14 +1,26 @@
+![version](https://img.shields.io/badge/version-0.7.1-yellow.svg)
+
 # Teller
-Teller is a Go-based application designed to facilitate real-time messaging through the use of Server-Sent Events (SSE). It provides a robust and secure platform for publishing and subscribing to messages, utilizing JWT (JSON Web Token) authentication for secure communication. Teller is ideal for scenarios where real-time updates and efficient communication between a server and multiple clients are crucial.
 
-## Key Features:
-* Real-Time Communication: Utilizes Server-Sent Events (SSE) to push real-time updates from the server to connected clients, ensuring that users receive timely and accurate information as it happens.
+**Teller** is a lightweight Go-based application designed to streamline real-time messaging through the use of Server-Sent Events (SSE). It provides a secure and efficient platform for both publishing and subscribing to messages, leveraging JWT (JSON Web Token) authentication to ensure that only authorized clients can interact with the system.
 
-* JWT Authentication: Implements secure authentication using JWTs, allowing only authorized clients to publish or subscribe to specific channels.
+Teller is ideal for scenarios where real-time updates are critical, and it excels in environments where quick setup, ease of testing, and minimal deployment complexity are desired. Its simplicity makes it particularly suited for Single Page Application (SPA) development and local frontend testing, offering a straightforward, yet powerful, real-time communication tool.
 
-* Scalable and Lightweight: Built with Go, Teller is designed to be lightweight and highly performant, capable of handling numerous concurrent connections with minimal resource usage.
+### Key Features
 
-* Configurable and Extendable: Teller offers easy configuration options for server settings like port number and JWT secret, and it can be extended to fit various real-time communication needs.
+- **Real-Time Communication**: Teller utilizes Server-Sent Events (SSE) to push real-time updates from the server to connected clients. This ensures that users receive timely and accurate information as soon as it becomes available, without the overhead of more complex protocols.
+
+- **JWT Authentication**: Teller implements secure JWT-based authentication, allowing only authorized clients to publish or subscribe to specific channels. This ensures that communication remains secure and restricted to trusted users.
+
+- **Scalable and Lightweight**: Built with Go, Teller is designed to be lightweight and highly performant. It can handle numerous concurrent connections with minimal resource usage, making it a perfect fit for resource-constrained environments.
+
+- **Easy Configuration and Deployment**: Teller requires minimal setup and can be easily configured at startup with simple command-line options, such as setting the port and JWT secret. Its simplicity means you don’t need to deploy complex containerized environments to get it running, making it an excellent choice for quick deployments and local development.
+
+- **Ideal for SPA and Frontend Development**: Teller’s straightforward SSE implementation is perfect for testing and developing Single Page Applications (SPAs). It provides an easy-to-use solution for developers needing to simulate or work with real-time data in their frontend applications without the need for heavy infrastructure.
+
+- **Extensible and Flexible**: While simple out of the box, Teller is easily extendable to fit a variety of real-time communication needs. You can adapt it to more complex scenarios as your project evolves, all while keeping the core experience easy and efficient.
+
+Teller is the go-to tool for developers looking for a simple yet powerful solution for real-time messaging, especially in environments where quick setup, minimal overhead, and ease of use are paramount.
 
 ## Running the Teller Application
 
