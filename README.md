@@ -66,3 +66,60 @@ If you provide an invalid value for the --jwt-ttl parameter, the application wil
 Once the server is running, you can check its status by trying to access it via a web browser or a command-line tool like curl:
 `curl http://localhost:8080`
 If the server is running correctly, you should receive a response, or in the case of a properly configured route, you may see a message or data returned from the server.
+
+
+## Subscribing to Channels
+#### Overview of the Subscription Process
+The subscription process in Teller involves the following steps:
+
+1. Client Sends a Subscription Request: The client sends an HTTP GET request to the /subscribe endpoint, specifying the channel they wish to subscribe to. The request must include a valid JWT token in the Authorization header.
+2. Server Streams Messages: Upon a successful subscription, the server streams messages to the client as they are published to the specified channel.
+3. Real-Time Updates: The client receives real-time updates in the form of SSE messages as long as the connection remains open.
+
+##### Subscribing to a Channel Using JavaScript
+To subscribe to a channel using JavaScript, follow these steps:
+
+- Obtain a JWT Token: First, obtain a JWT token from your backend (this step depends on your authentication flow).
+
+- Create a Subscription to the Channel:
+
+- Use the following JavaScript code to subscribe to a channel and listen for updates:
+
+```javascript
+async function subscribeToChannel(channel) {
+    const token = 'your_jwt_token'; // Replace with your actual JWT token
+    const url = new URL(`http://localhost:8080/subscribe`);
+    url.searchParams.append('channel', channel);
+
+    const eventSource = new EventSource(url, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    eventSource.onmessage = function(event) {
+        console.log('New message:', event.data);
+    };
+
+    eventSource.onerror = function(event) {
+        console.error('Subscription error:', event);
+    };
+}
+
+// Call the function to subscribe to a specific channel
+subscribeToChannel('test-channel');
+```
+
+- Expected Messages:
+ - New Message: When a new message is published to the channel, you will see an output in the console like:
+`data: {"key":"value2"}`
+
+##### Subscribing to a Channel Using curlSubscribing to a Channel Using curl
+You can also subscribe to a channel using curl from the command line. This is useful for testing or simple scripts.
+
+```bash
+curl -N -H "Accept: text/event-stream" \
+     -H "Authorization: Bearer your_jwt_token" \
+     "http://localhost:8080/subscribe?channel=test-channel"
+
+```
