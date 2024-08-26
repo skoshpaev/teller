@@ -2,6 +2,54 @@
 
 # Teller
 
+### Get Started in Three Easy Steps
+
+#### 1. Run the Server – It's Super Easy
+
+Start your Teller server with just one command. All you need is a JWT secret, and you're good to go:
+
+```bash
+bin/Teller/main --jwt-secret=your_jwt_secret
+```
+
+By default, the server runs on port `8080`, but you can easily change it with a simple flag. Your server is now ready to handle real-time connections!
+
+#### 2. Subscribe to a Channel – It's as Simple as 1-2-3
+
+Subscribing to real-time updates is a breeze. With just a few lines of JavaScript, you're connected and ready to receive live messages:
+
+```javascript
+const eventSource = new EventSource('http://localhost:8080/subscribe?channel=test-channel', {
+    headers: { 'Authorization': 'Bearer your_jwt_token' }
+});
+
+eventSource.onmessage = function(event) {
+    console.log('New message:', event.data);
+};
+```
+
+That's it! You're now subscribed to `test-channel` and will receive updates as soon as they're available.
+
+#### 3. Publish a Message – No Hassle, No Fuss
+
+Need to send a message? Teller makes it effortless. Just use `curl` or your favorite HTTP client:
+
+```bash
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer your_jwt_token" \
+     -d '{"channel": "test-channel", "message": {"key": "value"}}' \
+     http://localhost:8080/publish
+```
+
+Your message is instantly broadcasted to all subscribers of `test-channel`. Real-time communication has never been this easy!
+
+### Try Teller, it works
+
+Teller is designed for developers who value simplicity and efficiency. Whether you're working on a small project or need a reliable real-time messaging solution, Teller delivers with minimal overhead and maximum performance. Give it a try and see how effortlessly you can add real-time capabilities to your application.
+
+
+
 **Teller** is a lightweight Go-based application designed to streamline real-time messaging through the use of Server-Sent Events (SSE). It provides a secure and efficient platform for both publishing and subscribing to messages, leveraging JWT (JSON Web Token) authentication to ensure that only authorized clients can interact with the system.
 
 Teller is ideal for scenarios where real-time updates are critical, and it excels in environments where quick setup, ease of testing, and minimal deployment complexity are desired. Its simplicity makes it particularly suited for Single Page Application (SPA) development and local frontend testing, offering a straightforward, yet powerful, real-time communication tool.
