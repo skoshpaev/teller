@@ -152,7 +152,7 @@ If you provide an invalid value for the --jwt-ttl parameter, the application wil
 
 **Solution:** Ensure that the --jwt-ttl value is a positive integer representing the number of hours.
 
-#### 4. Checking the Server Status4. Checking the Server Status
+#### 4. Checking the Server Status
 Once the server is running, you can check its status by trying to access it via a web browser or a command-line tool like curl:
 `curl http://localhost:8080`
 If the server is running correctly, you should receive a response, or in the case of a properly configured route, you may see a message or data returned from the server.
@@ -213,6 +213,23 @@ curl -N -H "Accept: text/event-stream" \
      "http://localhost:8080/subscribe?channel=test-channel"
 
 ```
+
+### Possible Errors When Subscribing to a Channel
+
+- **Invalid Request Method (405 Method Not Allowed)**:
+  - Occurs when a request to `/subscribe` uses a method other than GET.
+
+- **Missing or Invalid Authorization Header (401 Unauthorized)**:
+  - Triggered if the `Authorization` header is missing, malformed, or does not start with "Bearer ".
+
+- **Invalid Token (401 Unauthorized)**:
+  - Happens when the JWT token is invalid, expired, or signed with an unexpected algorithm.
+
+- **Missing Channel Parameter (400 Bad Request)**:
+  - Occurs if the `channel` parameter is missing in the request URL.
+
+- **Server Error (500 Internal Server Error)**:
+  - Occurs if the server encounters an unexpected issue, such as problems with streaming support.
 
 ## Publishing Messages in Teller
 
@@ -291,3 +308,23 @@ Replace `your_jwt_token` with a valid JWT token and adjust the `channel` and `me
   ```json
   "Message received successfully"
   ```
+
+### Possible Errors When Publishing Messages
+
+- **Invalid Request Method (405 Method Not Allowed)**:
+  - Checked by verifying `r.Method` against `http.MethodPost`.
+
+- **Missing or Invalid Authorization Header (401 Unauthorized)**:
+  - Triggered if the `Authorization` header is missing, malformed, or does not start with "Bearer ".
+
+- **Invalid Token (401 Unauthorized)**:
+  - Happens when the JWT token is invalid, expired, or signed with an unexpected algorithm.
+
+- **Invalid JSON (400 Bad Request)**:
+  - Triggered if the JSON in the request body cannot be parsed.
+
+- **Invalid Channel or Message (400 Bad Request)**:
+  - Occurs if the `channel` field is empty or if the `message` field is not valid JSON.
+
+- **Server Error (500 Internal Server Error)**:
+  - Occurs if the server encounters an unexpected issue, such as a problem with streaming support.
