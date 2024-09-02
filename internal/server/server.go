@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -104,6 +105,21 @@ func (s *Server) handleSubscribe(w http.ResponseWriter, r *http.Request) {
 	channel := r.URL.Query().Get("channel")
 	if channel == "" {
 		http.Error(w, "Missing channel parameter", http.StatusBadRequest)
+		return
+	}
+
+	if r.URL.Query().Get("test") != "" {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK) // First, set the response status
+
+		fmt.Fprintf(w, `{"test": true}`)
+
+		flusher, ok := w.(http.Flusher)
+		if ok {
+			flusher.Flush() // Send the data to the client
+		}
+
+		time.Sleep(3 * time.Second)
 		return
 	}
 

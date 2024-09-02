@@ -105,7 +105,7 @@ Teller is the go-to tool for developers looking for a simple yet powerful soluti
 #### 1. Building the Application
 Before running the Teller application, you need to build the executable. From the root of your project, run the following commands:
 
-`go build -o bin/Teller/main`
+`go build -o bin/Teller/main ./cmd/Teller`
 
 This command compiles your Go code and generates the executable at bin/Teller/main.
 #### 2. Running the Application
@@ -328,3 +328,20 @@ Replace `your_jwt_token` with a valid JWT token and adjust the `channel` and `me
 
 - **Server Error (500 Internal Server Error)**:
   - Occurs if the server encounters an unexpected issue, such as a problem with streaming support.
+
+
+## Load Testing
+
+For load testing use [k6](https://k6.io/).
+
+### Install k6 (Mac):
+
+```bash
+brew install k6
+```
+
+### Running tests
+
+```bash
+k6 run load_test.js
+```
