@@ -334,8 +334,14 @@ Replace `your_jwt_token` with a valid JWT token and adjust the `channel` and `me
 
 For load testing use [k6](https://k6.io/).
 
-### Install k6:
+### Install k6 (Mac):
 
 ```bash
 brew install k6
+```
+
+### Running tests
+
+```bash
+k6 run load_test.js
 ```

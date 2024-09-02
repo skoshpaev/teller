@@ -33,3 +33,5 @@ _test/
 # Go modules, can exclude if you want to commit go.sum
 go.sum
 
+# Other
+.DS_Store
