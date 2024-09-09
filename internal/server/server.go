@@ -57,17 +57,37 @@ func (s *Server) handlePublish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var payload struct {
-		Channel string          `json:"channel"`
-		Message json.RawMessage `json:"message"`
-	}
+	contentType := r.Header.Get("Content-Type")
+	var channel string
+	var message json.RawMessage
 
-	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+	if contentType == "application/x-www-form-urlencoded" {
+		// Handle form-urlencoded data
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, "Invalid form data", http.StatusBadRequest)
+			return
+		}
+		channel = r.FormValue("topic")
+		message = json.RawMessage(fmt.Sprintf(`"%s"`, r.FormValue("data")))
+	} else if contentType == "application/json" {
+		// Handle JSON data
+		var payload struct {
+			Channel string          `json:"channel"`
+			Message json.RawMessage `json:"message"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+			http.Error(w, "Invalid JSON", http.StatusBadRequest)
+			return
+		}
+		channel = payload.Channel
+		message = payload.Message
+	} else {
+		http.Error(w, "Unsupported Content-Type", http.StatusUnsupportedMediaType)
 		return
 	}
 
-	if payload.Channel == "" || !json.Valid(payload.Message) {
+	if channel == "" || !json.Valid(message) {
 		http.Error(w, "Invalid channel or message", http.StatusBadRequest)
 		return
 	}
@@ -75,9 +95,9 @@ func (s *Server) handlePublish(w http.ResponseWriter, r *http.Request) {
 	s.SubsMutex.RLock()
 	defer s.SubsMutex.RUnlock()
 
-	if chans, found := s.Subscribers[payload.Channel]; found {
+	if chans, found := s.Subscribers[channel]; found {
 		for _, ch := range chans {
-			ch <- payload.Message
+			ch <- message
 		}
 	}
 

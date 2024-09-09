@@ -43,6 +43,16 @@ curl -X POST \
      http://localhost:8080/publish
 ```
 
+OR LIKE IN MERCURE
+
+```bash
+curl -X POST \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -H "Authorization: Bearer your_jwt_token" \
+     -d "topic=/test-channel&data=Your any message content" \
+     "http://localhost:8080/publish"
+```
+
 Your message is instantly broadcasted to all subscribers of `test-channel`. Real-time communication has never been this easy!
 
 ### Try Teller, it works
@@ -344,4 +354,4 @@ brew install k6
 
 ```bash
 k6 run load_test.js
-```
+# ```
