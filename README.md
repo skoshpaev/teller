@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-0.7.1-yellow.svg)
+![version](https://img.shields.io/badge/version-1.0.0-green.svg)
 ![Go Version](https://img.shields.io/github/go-mod/go-version/skoshpaev/teller)
 
 # Teller
