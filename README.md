@@ -15,6 +15,8 @@ bin/Teller/main --jwt-secret=your_jwt_secret
 
 By default, the server runs on port `8080`, but you can easily change it with a simple flag. Your server is now ready to handle real-time connections!
 
+![Work scheme](https://github.com/skoshpaev/teller/blob/main/img/Teller.png?raw=true)
+
 #### 2. Subscribe to a Channel – It's as Simple as 1-2-3
 
 Subscribing to real-time updates is a breeze. With just a few lines of JavaScript, you're connected and ready to receive live messages:
